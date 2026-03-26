@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/GrayMan.cs" id="1_grayman"]
+[ext_resource type="Shader" path="res://shaders/ps1_world.gdshader" id="2_ps1world"]
+
+[sub_resource type="ShaderMaterial" id="Mat_gm"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.42, 0.42, 0.44, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="BoxMesh" id="BM_body_gm"]
+size = Vector3(0.5, 1.0, 0.35)
+
+[sub_resource type="BoxMesh" id="BM_head_gm"]
+size = Vector3(0.42, 0.42, 0.42)
+
+[sub_resource type="BoxMesh" id="BM_arm_gm"]
+size = Vector3(0.18, 0.7, 0.18)
+
+[sub_resource type="CapsuleShape3D" id="CS_gm"]
+radius = 0.3
+height = 1.6
+
+[node name="GrayMan" type="CharacterBody3D"]
+script = ExtResource("1_grayman")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("CS_gm")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BM_body_gm")
+material_override = SubResource("Mat_gm")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.21, 0)
+mesh = SubResource("BM_head_gm")
+material_override = SubResource("Mat_gm")
+
+[node name="Arm_L" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.34, 0.55, 0)
+mesh = SubResource("BM_arm_gm")
+material_override = SubResource("Mat_gm")
+
+[node name="Arm_R" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.34, 0.55, 0)
+mesh = SubResource("BM_arm_gm")
+material_override = SubResource("Mat_gm")

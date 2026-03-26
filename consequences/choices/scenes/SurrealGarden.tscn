@@ -1,0 +1,286 @@
+[gd_scene load_steps=29 format=3]
+
+[ext_resource type="Script" path="res://scripts/Player.cs" id="1_player"]
+[ext_resource type="Shader" path="res://shaders/ps1_world.gdshader" id="2_ps1world"]
+[ext_resource type="Shader" path="res://shaders/ps1_screen.gdshader" id="3_ps1screen"]
+[ext_resource type="Script" path="res://scripts/LinkZone.cs" id="4_linkzone"]
+
+[sub_resource type="Environment" id="Environment_garden"]
+background_mode = 1
+background_color = Color(0.85, 0.35, 0.65, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1.0, 0.7, 0.9, 1)
+ambient_light_energy = 1.2
+fog_enabled = false
+
+[sub_resource type="ShaderMaterial" id="Mat_ground_garden"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.85, 0.3, 0.65, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_pillar_cyan"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.2, 0.85, 0.9, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_pillar_yellow"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.95, 0.85, 0.1, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_pillar_purple"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.55, 0.1, 0.9, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_platform_orange"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.95, 0.45, 0.1, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_platform_green"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.1, 0.9, 0.45, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_skycube1"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.9, 0.3, 0.65, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_skycube2"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.2, 0.9, 0.8, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_skycube3"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.95, 0.8, 0.1, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="SMat_screen"]
+shader = ExtResource("3_ps1screen")
+shader_parameter/color_depth = 32.0
+shader_parameter/dither_strength = 0.8
+shader_parameter/saturation = 1.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_ground"]
+size = Vector3(30, 0.2, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(30, 0.2, 30)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
+size = Vector3(0.6, 5.0, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pillar"]
+size = Vector3(0.6, 5.0, 0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_platform"]
+size = Vector3(2.0, 0.3, 2.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_platform"]
+size = Vector3(2.0, 0.3, 2.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_skycube1"]
+size = Vector3(1.5, 1.5, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_skycube2"]
+size = Vector3(1.0, 1.0, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_skycube3"]
+size = Vector3(2.0, 2.0, 2.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lz_pillar"]
+size = Vector3(1.5, 4.0, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lz_platform1"]
+size = Vector3(2.5, 1.5, 2.5)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+radius = 0.3
+height = 1.8
+
+[node name="SurrealGarden" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_garden")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866, 0, 0.866, 0.5, 0, 10, 0)
+light_energy = 2.5
+shadow_enabled = true
+
+[node name="AmbientLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+light_color = Color(1.0, 0.7, 0.9, 1)
+light_energy = 2.0
+omni_range = 25.0
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="GroundMesh" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_ground")
+material_override = SubResource("Mat_ground_garden")
+
+[node name="GroundShape" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_ground")
+
+[node name="Pillar1_Cyan" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.5, -8)
+
+[node name="Mesh" type="MeshInstance3D" parent="Pillar1_Cyan"]
+mesh = SubResource("BoxMesh_pillar")
+material_override = SubResource("Mat_pillar_cyan")
+
+[node name="Shape" type="CollisionShape3D" parent="Pillar1_Cyan"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="Pillar2_Yellow" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.5, -5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Pillar2_Yellow"]
+mesh = SubResource("BoxMesh_pillar")
+material_override = SubResource("Mat_pillar_yellow")
+
+[node name="Shape" type="CollisionShape3D" parent="Pillar2_Yellow"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="Pillar3_Purple" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2.5, 6)
+
+[node name="Mesh" type="MeshInstance3D" parent="Pillar3_Purple"]
+mesh = SubResource("BoxMesh_pillar")
+material_override = SubResource("Mat_pillar_purple")
+
+[node name="Shape" type="CollisionShape3D" parent="Pillar3_Purple"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="Platform1_Orange" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.15, 7)
+
+[node name="Mesh" type="MeshInstance3D" parent="Platform1_Orange"]
+mesh = SubResource("BoxMesh_platform")
+material_override = SubResource("Mat_platform_orange")
+
+[node name="Shape" type="CollisionShape3D" parent="Platform1_Orange"]
+shape = SubResource("BoxShape3D_platform")
+
+[node name="Platform2_Green" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.15, 3)
+
+[node name="Mesh" type="MeshInstance3D" parent="Platform2_Green"]
+mesh = SubResource("BoxMesh_platform")
+material_override = SubResource("Mat_platform_green")
+
+[node name="Shape" type="CollisionShape3D" parent="Platform2_Green"]
+shape = SubResource("BoxShape3D_platform")
+
+[node name="SkyCube1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 8, -10)
+mesh = SubResource("BoxMesh_skycube1")
+material_override = SubResource("Mat_skycube1")
+
+[node name="SkyCube2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 6, 4)
+mesh = SubResource("BoxMesh_skycube2")
+material_override = SubResource("Mat_skycube2")
+
+[node name="SkyCube3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 10, 8)
+mesh = SubResource("BoxMesh_skycube3")
+material_override = SubResource("Mat_skycube3")
+
+[node name="LinkZone_Pillar1" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.0, -8)
+script = ExtResource("4_linkzone")
+LinkType = "dynamic"
+StaticTarget = ""
+StaticSpawn = ""
+MoodUd = 2.0
+MoodSd = 1.5
+FadeColor = Color(0.8, 0.1, 0.6, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_Pillar1"]
+shape = SubResource("BoxShape3D_lz_pillar")
+
+[node name="LinkZone_Pillar2" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.0, -5)
+script = ExtResource("4_linkzone")
+LinkType = "dynamic"
+StaticTarget = ""
+StaticSpawn = ""
+MoodUd = 2.5
+MoodSd = 2.0
+FadeColor = Color(0.9, 0.8, 0.0, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_Pillar2"]
+shape = SubResource("BoxShape3D_lz_pillar")
+
+[node name="LinkZone_Pillar3" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2.0, 6)
+script = ExtResource("4_linkzone")
+LinkType = "static"
+StaticTarget = "res://scenes/HouseInterior.tscn"
+StaticSpawn = "interior"
+MoodUd = 1.0
+MoodSd = -1.0
+FadeColor = Color(1.0, 1.0, 1.0, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_Pillar3"]
+shape = SubResource("BoxShape3D_lz_pillar")
+
+[node name="LinkZone_Platform1" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.8, 7)
+script = ExtResource("4_linkzone")
+LinkType = "dynamic"
+StaticTarget = ""
+StaticSpawn = ""
+MoodUd = 1.5
+MoodSd = 2.5
+FadeColor = Color(0.9, 0.4, 0.0, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_Platform1"]
+shape = SubResource("BoxShape3D_lz_platform1")
+
+[node name="Spawn_Garden" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_player")
+
+[node name="PlayerMesh" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_player")
+
+[node name="PlayerCollision" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="PSX_CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="ScreenFX" type="ColorRect" parent="PSX_CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+material = SubResource("SMat_screen")
+mouse_filter = 2

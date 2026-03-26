@@ -1,0 +1,279 @@
+[gd_scene load_steps=29 format=3]
+
+[ext_resource type="Script" path="res://scripts/Player.cs" id="1_player"]
+[ext_resource type="Shader" path="res://shaders/ps1_world.gdshader" id="2_ps1world"]
+[ext_resource type="Shader" path="res://shaders/ps1_screen.gdshader" id="3_ps1screen"]
+[ext_resource type="Script" path="res://scripts/LinkZone.cs" id="4_linkzone"]
+
+[sub_resource type="Environment" id="Environment_alley"]
+background_mode = 1
+background_color = Color(0.02, 0.02, 0.04, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.3, 0.1, 0.2, 1)
+ambient_light_energy = 0.35
+fog_enabled = true
+fog_density = 0.12
+fog_light_color = Color(0.15, 0.05, 0.1, 1)
+
+[sub_resource type="ShaderMaterial" id="Mat_dark_walls"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.1, 0.1, 0.12, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_dark_floor"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.13, 0.11, 0.1, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_trash"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.18, 0.15, 0.1, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_strange_door"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.35, 0.05, 0.05, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_sconce"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.22, 0.2, 0.18, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="SMat_screen"]
+shader = ExtResource("3_ps1screen")
+shader_parameter/color_depth = 32.0
+shader_parameter/dither_strength = 0.8
+shader_parameter/saturation = 1.8
+
+[sub_resource type="BoxMesh" id="BM_floor_alley"]
+size = Vector3(4.5, 0.2, 14.5)
+
+[sub_resource type="BoxShape3D" id="BS_floor_alley"]
+size = Vector3(4.5, 0.2, 14.5)
+
+[sub_resource type="BoxMesh" id="BM_ceiling_alley"]
+size = Vector3(4.5, 0.2, 14.5)
+
+[sub_resource type="BoxShape3D" id="BS_ceiling_alley"]
+size = Vector3(4.5, 0.2, 14.5)
+
+[sub_resource type="BoxMesh" id="BM_wall_ns_alley"]
+size = Vector3(4.5, 3.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BS_wall_ns_alley"]
+size = Vector3(4.5, 3.5, 0.5)
+
+[sub_resource type="BoxMesh" id="BM_wall_ew_alley"]
+size = Vector3(0.5, 3.5, 14.5)
+
+[sub_resource type="BoxShape3D" id="BS_wall_ew_alley"]
+size = Vector3(0.5, 3.5, 14.5)
+
+[sub_resource type="BoxMesh" id="BM_trash_alley"]
+size = Vector3(0.4, 0.6, 0.4)
+
+[sub_resource type="BoxShape3D" id="BS_trash_alley"]
+size = Vector3(0.4, 0.6, 0.4)
+
+[sub_resource type="BoxMesh" id="BM_strange_door_alley"]
+size = Vector3(1.2, 2.2, 0.15)
+
+[sub_resource type="BoxMesh" id="BM_sconce_alley"]
+size = Vector3(0.15, 0.2, 0.25)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_player_alley"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player_alley"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="BoxShape3D" id="BS_link_north_alley"]
+size = Vector3(3.5, 3.0, 1.5)
+
+[sub_resource type="BoxShape3D" id="BS_link_east_alley"]
+size = Vector3(0.8, 2.5, 3.0)
+
+[sub_resource type="BoxShape3D" id="BS_link_door_alley"]
+size = Vector3(1.4, 2.4, 0.6)
+
+[node name="DarkAlley" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_alley")
+
+[node name="OmniLight1" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+light_color = Color(0.8, 0.2, 0.1, 1)
+light_energy = 1.8
+omni_range = 12.0
+
+[node name="OmniLight2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, -5)
+light_color = Color(0.5, 0.1, 0.05, 1)
+light_energy = 0.8
+omni_range = 6.0
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="FloorMesh" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BM_floor_alley")
+material_override = SubResource("Mat_dark_floor")
+
+[node name="FloorShape" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BS_floor_alley")
+
+[node name="Ceiling" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 0)
+
+[node name="CeilingMesh" type="MeshInstance3D" parent="Ceiling"]
+mesh = SubResource("BM_ceiling_alley")
+material_override = SubResource("Mat_dark_walls")
+
+[node name="CeilingShape" type="CollisionShape3D" parent="Ceiling"]
+shape = SubResource("BS_ceiling_alley")
+
+[node name="Wall_N" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -7.25)
+
+[node name="WallNMesh" type="MeshInstance3D" parent="Wall_N"]
+mesh = SubResource("BM_wall_ns_alley")
+material_override = SubResource("Mat_dark_walls")
+
+[node name="WallNShape" type="CollisionShape3D" parent="Wall_N"]
+shape = SubResource("BS_wall_ns_alley")
+
+[node name="Wall_S" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 7.25)
+
+[node name="WallSMesh" type="MeshInstance3D" parent="Wall_S"]
+mesh = SubResource("BM_wall_ns_alley")
+material_override = SubResource("Mat_dark_walls")
+
+[node name="WallSShape" type="CollisionShape3D" parent="Wall_S"]
+shape = SubResource("BS_wall_ns_alley")
+
+[node name="Wall_E" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25, 1.75, 0)
+
+[node name="WallEMesh" type="MeshInstance3D" parent="Wall_E"]
+mesh = SubResource("BM_wall_ew_alley")
+material_override = SubResource("Mat_dark_walls")
+
+[node name="WallEShape" type="CollisionShape3D" parent="Wall_E"]
+shape = SubResource("BS_wall_ew_alley")
+
+[node name="Wall_W" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.25, 1.75, 0)
+
+[node name="WallWMesh" type="MeshInstance3D" parent="Wall_W"]
+mesh = SubResource("BM_wall_ew_alley")
+material_override = SubResource("Mat_dark_walls")
+
+[node name="WallWShape" type="CollisionShape3D" parent="Wall_W"]
+shape = SubResource("BS_wall_ew_alley")
+
+[node name="Trash1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 0.3, 2.0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Trash1"]
+mesh = SubResource("BM_trash_alley")
+material_override = SubResource("Mat_trash")
+
+[node name="Shape" type="CollisionShape3D" parent="Trash1"]
+shape = SubResource("BS_trash_alley")
+
+[node name="Trash2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.3, 0.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Trash2"]
+mesh = SubResource("BM_trash_alley")
+material_override = SubResource("Mat_trash")
+
+[node name="Shape" type="CollisionShape3D" parent="Trash2"]
+shape = SubResource("BS_trash_alley")
+
+[node name="StrangeDoor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, -7.0)
+mesh = SubResource("BM_strange_door_alley")
+material_override = SubResource("Mat_strange_door")
+
+[node name="WallSconce" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.15, 2.2, -2.0)
+mesh = SubResource("BM_sconce_alley")
+material_override = SubResource("Mat_sconce")
+
+[node name="Spawn_Alley" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4)
+
+[node name="LinkZone_NorthEnd" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -6.5)
+script = ExtResource("4_linkzone")
+LinkType = "dynamic"
+StaticTarget = ""
+StaticSpawn = ""
+MoodUd = -2.0
+MoodSd = 1.0
+FadeColor = Color(0.35, 0.0, 0.0, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_NorthEnd"]
+shape = SubResource("BS_link_north_alley")
+
+[node name="LinkZone_EastWall" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 1.5, -1.5)
+script = ExtResource("4_linkzone")
+LinkType = "dynamic"
+StaticTarget = ""
+StaticSpawn = ""
+MoodUd = -1.5
+MoodSd = 0.5
+FadeColor = Color(0.2, 0.0, 0.05, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_EastWall"]
+shape = SubResource("BS_link_east_alley")
+
+[node name="LinkZone_StrangeDoor" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, -7.1)
+script = ExtResource("4_linkzone")
+LinkType = "static"
+StaticTarget = "res://scenes/SurrealGarden.tscn"
+StaticSpawn = "garden"
+MoodUd = 3.0
+MoodSd = 2.0
+FadeColor = Color(0.8, 0.1, 0.6, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_StrangeDoor"]
+shape = SubResource("BS_link_door_alley")
+
+[node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4)
+script = ExtResource("1_player")
+
+[node name="PlayerMesh" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_player_alley")
+
+[node name="PlayerCollision" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_player_alley")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="PSX_CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="ScreenFX" type="ColorRect" parent="PSX_CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+material = SubResource("SMat_screen")
+mouse_filter = 2

@@ -11,13 +11,18 @@ config_version=5
 [application]
 
 config/name="Choices"
-run/main_scene="res://scenes/OutdoorRoom.tscn"
-config/features=PackedStringArray("4.6", "Forward Plus")
+run/main_scene="uid://b1eaxvvsr6v8x"
+config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-GameState="*res://scripts/GameState.gd"
+GameState="*res://scripts/GameState.cs"
+DreamManager="*res://scripts/DreamManager.cs"
+FadeOverlay="*res://scripts/FadeOverlay.cs"
+DreamHUD="*res://scripts/DreamHUD.cs"
+MusicManager="*res://scripts/MusicManager.cs"
+SettingsMenu="*res://scripts/SettingsMenu.cs"
 
 [display]
 
@@ -26,7 +31,6 @@ window/size/viewport_height=240
 window/size/window_width_override=1920
 window/size/window_height_override=1080
 window/stretch/mode="viewport"
-window/stretch/aspect="keep"
 
 [dotnet]
 

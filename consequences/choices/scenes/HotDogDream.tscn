@@ -1,0 +1,362 @@
+[gd_scene load_steps=24 format=3]
+
+[ext_resource type="Script" path="res://scripts/Player.cs" id="1_player"]
+[ext_resource type="Shader" path="res://shaders/ps1_world.gdshader" id="2_ps1world"]
+[ext_resource type="Shader" path="res://shaders/ps1_screen.gdshader" id="3_ps1screen"]
+[ext_resource type="Script" path="res://scripts/LinkZone.cs" id="4_linkzone"]
+
+[sub_resource type="Environment" id="Environment_hd"]
+background_mode = 1
+background_color = Color(0.8, 0.6, 0.05, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1.0, 0.85, 0.3, 1)
+ambient_light_energy = 1.0
+fog_enabled = false
+
+[sub_resource type="ShaderMaterial" id="Mat_ground_hd"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.9, 0.75, 0.05, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_bun_hd"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.85, 0.55, 0.15, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_sausage_hd"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.6, 0.18, 0.08, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_spectator_hd"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.55, 0.55, 0.55, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_scoreboard_hd"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.1, 0.1, 0.6, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_screen_hd"]
+shader = ExtResource("3_ps1screen")
+shader_parameter/color_depth = 32.0
+shader_parameter/dither_strength = 0.8
+shader_parameter/saturation = 1.8
+
+[sub_resource type="BoxMesh" id="BM_ground_hd"]
+size = Vector3(20, 0.2, 20)
+
+[sub_resource type="BoxShape3D" id="BS_ground_hd"]
+size = Vector3(20, 0.2, 20)
+
+[sub_resource type="BoxMesh" id="BM_bun_hd"]
+size = Vector3(1.6, 0.45, 0.55)
+
+[sub_resource type="BoxMesh" id="BM_sausage_hd"]
+size = Vector3(1.2, 0.3, 0.35)
+
+[sub_resource type="BoxMesh" id="BM_spectator_hd"]
+size = Vector3(0.4, 1.2, 0.4)
+
+[sub_resource type="BoxShape3D" id="BS_spectator_hd"]
+size = Vector3(0.4, 1.2, 0.4)
+
+[sub_resource type="BoxMesh" id="BM_scoreboard_hd"]
+size = Vector3(6, 2, 0.2)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_hd"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape_hd"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="BoxShape3D" id="BS_link1_hd"]
+size = Vector3(8, 3, 8)
+
+[sub_resource type="BoxShape3D" id="BS_link2_hd"]
+size = Vector3(4, 5, 3)
+
+[sub_resource type="BoxShape3D" id="BS_link3_hd"]
+size = Vector3(6, 4, 1)
+
+[node name="HotDogDream" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_hd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.7, -0.71, 0, 0.71, 0.7, 0, 10, 0)
+light_energy = 2.0
+shadow_enabled = true
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
+light_color = Color(1.0, 0.9, 0.5, 1)
+light_energy = 1.5
+omni_range = 20.0
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BM_ground_hd")
+material_override = SubResource("Mat_ground_hd")
+
+[node name="Shape" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BS_ground_hd")
+
+[node name="HotDog1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.5, -5)
+
+[node name="Bun" type="MeshInstance3D" parent="HotDog1"]
+mesh = SubResource("BM_bun_hd")
+material_override = SubResource("Mat_bun_hd")
+
+[node name="Sausage" type="MeshInstance3D" parent="HotDog1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BM_sausage_hd")
+material_override = SubResource("Mat_sausage_hd")
+
+[node name="HotDog2" type="Node3D" parent="."]
+transform = Transform3D(0.707, 0, 0.707, 0, 1, 0, -0.707, 0, 0.707, -4, 4, -3)
+
+[node name="Bun" type="MeshInstance3D" parent="HotDog2"]
+mesh = SubResource("BM_bun_hd")
+material_override = SubResource("Mat_bun_hd")
+
+[node name="Sausage" type="MeshInstance3D" parent="HotDog2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BM_sausage_hd")
+material_override = SubResource("Mat_sausage_hd")
+
+[node name="HotDog3" type="Node3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6, 3, 2)
+
+[node name="Bun" type="MeshInstance3D" parent="HotDog3"]
+mesh = SubResource("BM_bun_hd")
+material_override = SubResource("Mat_bun_hd")
+
+[node name="Sausage" type="MeshInstance3D" parent="HotDog3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BM_sausage_hd")
+material_override = SubResource("Mat_sausage_hd")
+
+[node name="HotDog4" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 5.5, 4)
+
+[node name="Bun" type="MeshInstance3D" parent="HotDog4"]
+mesh = SubResource("BM_bun_hd")
+material_override = SubResource("Mat_bun_hd")
+
+[node name="Sausage" type="MeshInstance3D" parent="HotDog4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BM_sausage_hd")
+material_override = SubResource("Mat_sausage_hd")
+
+[node name="HotDog5" type="Node3D" parent="."]
+transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, 1, 6, -7)
+
+[node name="Bun" type="MeshInstance3D" parent="HotDog5"]
+mesh = SubResource("BM_bun_hd")
+material_override = SubResource("Mat_bun_hd")
+
+[node name="Sausage" type="MeshInstance3D" parent="HotDog5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BM_sausage_hd")
+material_override = SubResource("Mat_sausage_hd")
+
+[node name="HotDog6" type="Node3D" parent="."]
+transform = Transform3D(-0.707, 0, 0.707, 0, 1, 0, -0.707, 0, -0.707, -7, 2.8, -6)
+
+[node name="Bun" type="MeshInstance3D" parent="HotDog6"]
+mesh = SubResource("BM_bun_hd")
+material_override = SubResource("Mat_bun_hd")
+
+[node name="Sausage" type="MeshInstance3D" parent="HotDog6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BM_sausage_hd")
+material_override = SubResource("Mat_sausage_hd")
+
+[node name="HotDog7" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0.866, 0, 1, 0, -0.866, 0, 0.5, 8, 7, -4)
+
+[node name="Bun" type="MeshInstance3D" parent="HotDog7"]
+mesh = SubResource("BM_bun_hd")
+material_override = SubResource("Mat_bun_hd")
+
+[node name="Sausage" type="MeshInstance3D" parent="HotDog7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BM_sausage_hd")
+material_override = SubResource("Mat_sausage_hd")
+
+[node name="HotDog8" type="Node3D" parent="."]
+transform = Transform3D(0.94, 0, 0.34, 0, 1, 0, -0.34, 0, 0.94, -2, 4.5, 7)
+
+[node name="Bun" type="MeshInstance3D" parent="HotDog8"]
+mesh = SubResource("BM_bun_hd")
+material_override = SubResource("Mat_bun_hd")
+
+[node name="Sausage" type="MeshInstance3D" parent="HotDog8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BM_sausage_hd")
+material_override = SubResource("Mat_sausage_hd")
+
+[node name="Spectator1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.6, -8)
+
+[node name="Mesh" type="MeshInstance3D" parent="Spectator1"]
+mesh = SubResource("BM_spectator_hd")
+material_override = SubResource("Mat_spectator_hd")
+
+[node name="Shape" type="CollisionShape3D" parent="Spectator1"]
+shape = SubResource("BS_spectator_hd")
+
+[node name="Spectator2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.6, -8)
+
+[node name="Mesh" type="MeshInstance3D" parent="Spectator2"]
+mesh = SubResource("BM_spectator_hd")
+material_override = SubResource("Mat_spectator_hd")
+
+[node name="Shape" type="CollisionShape3D" parent="Spectator2"]
+shape = SubResource("BS_spectator_hd")
+
+[node name="Spectator3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.6, 8)
+
+[node name="Mesh" type="MeshInstance3D" parent="Spectator3"]
+mesh = SubResource("BM_spectator_hd")
+material_override = SubResource("Mat_spectator_hd")
+
+[node name="Shape" type="CollisionShape3D" parent="Spectator3"]
+shape = SubResource("BS_spectator_hd")
+
+[node name="Spectator4" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.6, 8)
+
+[node name="Mesh" type="MeshInstance3D" parent="Spectator4"]
+mesh = SubResource("BM_spectator_hd")
+material_override = SubResource("Mat_spectator_hd")
+
+[node name="Shape" type="CollisionShape3D" parent="Spectator4"]
+shape = SubResource("BS_spectator_hd")
+
+[node name="Spectator5" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -9)
+
+[node name="Mesh" type="MeshInstance3D" parent="Spectator5"]
+mesh = SubResource("BM_spectator_hd")
+material_override = SubResource("Mat_spectator_hd")
+
+[node name="Shape" type="CollisionShape3D" parent="Spectator5"]
+shape = SubResource("BS_spectator_hd")
+
+[node name="Spectator6" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 9)
+
+[node name="Mesh" type="MeshInstance3D" parent="Spectator6"]
+mesh = SubResource("BM_spectator_hd")
+material_override = SubResource("Mat_spectator_hd")
+
+[node name="Shape" type="CollisionShape3D" parent="Spectator6"]
+shape = SubResource("BS_spectator_hd")
+
+[node name="Spectator7" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.6, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Spectator7"]
+mesh = SubResource("BM_spectator_hd")
+material_override = SubResource("Mat_spectator_hd")
+
+[node name="Shape" type="CollisionShape3D" parent="Spectator7"]
+shape = SubResource("BS_spectator_hd")
+
+[node name="Spectator8" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.6, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Spectator8"]
+mesh = SubResource("BM_spectator_hd")
+material_override = SubResource("Mat_spectator_hd")
+
+[node name="Shape" type="CollisionShape3D" parent="Spectator8"]
+shape = SubResource("BS_spectator_hd")
+
+[node name="Scoreboard" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, -9)
+mesh = SubResource("BM_scoreboard_hd")
+material_override = SubResource("Mat_scoreboard_hd")
+
+[node name="LinkZone_Ground" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+script = ExtResource("4_linkzone")
+LinkType = "dynamic"
+StaticTarget = ""
+StaticSpawn = ""
+MoodUd = 2.0
+MoodSd = 3.0
+FadeColor = Color(0.9, 0.75, 0.05, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_Ground"]
+shape = SubResource("BS_link1_hd")
+
+[node name="LinkZone_Sky" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.0, -6)
+script = ExtResource("4_linkzone")
+LinkType = "dynamic"
+StaticTarget = ""
+StaticSpawn = ""
+MoodUd = 3.0
+MoodSd = 2.0
+FadeColor = Color(0.85, 0.55, 0.15, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_Sky"]
+shape = SubResource("BS_link2_hd")
+
+[node name="LinkZone_Board" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.0, -8.5)
+script = ExtResource("4_linkzone")
+LinkType = "static"
+StaticTarget = "res://scenes/DarkAlley.tscn"
+StaticSpawn = "alley"
+MoodUd = -1.0
+MoodSd = 2.0
+FadeColor = Color(0.1, 0.05, 0.3, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_Board"]
+shape = SubResource("BS_link3_hd")
+
+[node name="Spawn_Hotdog" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_player")
+
+[node name="PlayerMesh" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_hd")
+
+[node name="PlayerCollision" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape_hd")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="PSX_CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="ScreenFX" type="ColorRect" parent="PSX_CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+material = SubResource("Mat_screen_hd")
+mouse_filter = 2

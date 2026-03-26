@@ -1,0 +1,204 @@
+[gd_scene load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://scripts/Player.cs" id="1_player"]
+[ext_resource type="Shader" path="res://shaders/ps1_world.gdshader" id="2_ps1world"]
+[ext_resource type="Shader" path="res://shaders/ps1_screen.gdshader" id="3_ps1screen"]
+[ext_resource type="Script" path="res://scripts/LinkZone.cs" id="4_linkzone"]
+[ext_resource type="Script" path="res://scripts/FloatingAnimator.cs" id="5_floatanim"]
+
+[sub_resource type="Environment" id="Environment_vs"]
+background_mode = 1
+background_color = Color(0, 0, 0, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.4, 0.4, 0.5, 1)
+ambient_light_energy = 0.4
+fog_enabled = false
+
+[sub_resource type="ShaderMaterial" id="Mat_plat_vs"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.72, 0.72, 0.78, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_cube_vs"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.9, 0.9, 0.95, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_portal_vs"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.98, 0.98, 1.0, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_screen_vs"]
+shader = ExtResource("3_ps1screen")
+shader_parameter/color_depth = 32.0
+shader_parameter/dither_strength = 0.8
+shader_parameter/saturation = 1.8
+
+[sub_resource type="BoxMesh" id="BM_plat_vs"]
+size = Vector3(8, 0.2, 8)
+
+[sub_resource type="BoxShape3D" id="BS_plat_vs"]
+size = Vector3(8, 0.2, 8)
+
+[sub_resource type="BoxMesh" id="BM_cube_vs"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BM_cube_b_vs"]
+size = Vector3(0.7, 0.7, 0.7)
+
+[sub_resource type="BoxMesh" id="BM_cube_c_vs"]
+size = Vector3(1.5, 1.5, 1.5)
+
+[sub_resource type="BoxMesh" id="BM_beam_v_vs"]
+size = Vector3(0.12, 2.2, 0.12)
+
+[sub_resource type="BoxMesh" id="BM_beam_h_vs"]
+size = Vector3(2.0, 0.12, 0.12)
+
+[sub_resource type="BoxShape3D" id="BS_portal_vs"]
+size = Vector3(2.2, 2.5, 0.8)
+
+[sub_resource type="BoxShape3D" id="BS_edge_vs"]
+size = Vector3(1.0, 2.0, 8.0)
+
+[sub_resource type="CapsuleMesh" id="CM_vs"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CS_vs"]
+radius = 0.3
+height = 1.8
+
+[node name="VoidSpace" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vs")
+
+[node name="Platform" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="PlatformMesh" type="MeshInstance3D" parent="Platform"]
+mesh = SubResource("BM_plat_vs")
+material_override = SubResource("Mat_plat_vs")
+
+[node name="PlatformShape" type="CollisionShape3D" parent="Platform"]
+shape = SubResource("BS_plat_vs")
+
+[node name="FloatCube1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 3, -2)
+script = ExtResource("5_floatanim")
+BobAmplitude = 0.4
+BobSpeed = 0.7
+DoRotate = true
+RotateSpeed = 0.4
+
+[node name="Mesh" type="MeshInstance3D" parent="FloatCube1"]
+mesh = SubResource("BM_cube_vs")
+material_override = SubResource("Mat_cube_vs")
+
+[node name="FloatCube2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 5, 1)
+script = ExtResource("5_floatanim")
+BobAmplitude = 0.25
+BobSpeed = 1.1
+DoRotate = true
+RotateSpeed = -0.3
+
+[node name="Mesh" type="MeshInstance3D" parent="FloatCube2"]
+mesh = SubResource("BM_cube_b_vs")
+material_override = SubResource("Mat_cube_vs")
+
+[node name="FloatCube3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 8, -3.5)
+script = ExtResource("5_floatanim")
+BobAmplitude = 0.5
+BobSpeed = 0.5
+DoRotate = false
+
+[node name="Mesh" type="MeshInstance3D" parent="FloatCube3"]
+mesh = SubResource("BM_cube_c_vs")
+material_override = SubResource("Mat_cube_vs")
+
+[node name="PortalBeam_Left" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 1.1, -3.7)
+mesh = SubResource("BM_beam_v_vs")
+material_override = SubResource("Mat_portal_vs")
+
+[node name="PortalBeam_Right" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1.1, -3.7)
+mesh = SubResource("BM_beam_v_vs")
+material_override = SubResource("Mat_portal_vs")
+
+[node name="PortalBeam_Top" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, -3.7)
+mesh = SubResource("BM_beam_h_vs")
+material_override = SubResource("Mat_portal_vs")
+
+[node name="PortalBeam_Bottom" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, -3.7)
+mesh = SubResource("BM_beam_h_vs")
+material_override = SubResource("Mat_portal_vs")
+
+[node name="LinkZone_Portal" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -3.7)
+script = ExtResource("4_linkzone")
+LinkType = "static"
+StaticTarget = "res://scenes/SurrealGarden.tscn"
+StaticSpawn = "garden"
+MoodUd = 3.0
+MoodSd = 2.0
+FadeColor = Color(0.8, 0.1, 0.6, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_Portal"]
+shape = SubResource("BS_portal_vs")
+
+[node name="LinkZone_East" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 1.0, 0)
+script = ExtResource("4_linkzone")
+LinkType = "dynamic"
+StaticTarget = ""
+StaticSpawn = ""
+MoodUd = 0.0
+MoodSd = 2.5
+FadeColor = Color(0.0, 0.0, 0.0, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_East"]
+shape = SubResource("BS_edge_vs")
+
+[node name="OmniLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+light_color = Color(0.8, 0.85, 1.0, 1)
+light_energy = 1.2
+omni_range = 15.0
+
+[node name="Spawn_Void" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
+
+[node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
+script = ExtResource("1_player")
+
+[node name="PlayerMesh" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CM_vs")
+
+[node name="PlayerCollision" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CS_vs")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="PSX_CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="ScreenFX" type="ColorRect" parent="PSX_CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+material = SubResource("Mat_screen_vs")
+mouse_filter = 2

@@ -1,0 +1,339 @@
+[gd_scene load_steps=36 format=3]
+
+[ext_resource type="Script" path="res://scripts/Player.cs" id="1_player"]
+[ext_resource type="Shader" path="res://shaders/ps1_world.gdshader" id="2_ps1world"]
+[ext_resource type="Shader" path="res://shaders/ps1_screen.gdshader" id="3_ps1screen"]
+[ext_resource type="Script" path="res://scripts/LinkZone.cs" id="4_linkzone"]
+[ext_resource type="Script" path="res://scripts/FloatingAnimator.cs" id="5_floatanim"]
+
+[sub_resource type="Environment" id="Environment_af"]
+background_mode = 1
+background_color = Color(0.02, 0.03, 0.08, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.25, 0.15, 0.05, 1)
+ambient_light_energy = 0.5
+fog_enabled = true
+fog_density = 0.04
+fog_light_color = Color(0.1, 0.06, 0.02, 1)
+
+[sub_resource type="ShaderMaterial" id="Mat_ground_af"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.14, 0.11, 0.08, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_rust_af"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.32, 0.1, 0.03, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_booth_dark_af"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.12, 0.2, 0.15, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_booth_red_af"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.22, 0.06, 0.06, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_sign_af"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.08, 0.06, 0.18, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_merry_af"]
+shader = ExtResource("2_ps1world")
+shader_parameter/albedo = Color(0.28, 0.04, 0.04, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_screen_af"]
+shader = ExtResource("3_ps1screen")
+shader_parameter/color_depth = 32.0
+shader_parameter/dither_strength = 0.8
+shader_parameter/saturation = 1.8
+
+[sub_resource type="BoxMesh" id="BM_ground_af"]
+size = Vector3(40, 0.2, 40)
+
+[sub_resource type="BoxShape3D" id="BS_ground_af"]
+size = Vector3(40, 0.2, 40)
+
+[sub_resource type="BoxMesh" id="BM_pole_af"]
+size = Vector3(0.4, 14, 0.4)
+
+[sub_resource type="BoxShape3D" id="BS_pole_af"]
+size = Vector3(0.4, 14, 0.4)
+
+[sub_resource type="BoxMesh" id="BM_axle_af"]
+size = Vector3(10, 0.4, 0.4)
+
+[sub_resource type="BoxShape3D" id="BS_axle_af"]
+size = Vector3(10, 0.4, 0.4)
+
+[sub_resource type="BoxMesh" id="BM_gondola_af"]
+size = Vector3(0.8, 1.0, 0.5)
+
+[sub_resource type="BoxShape3D" id="BS_gondola_af"]
+size = Vector3(0.8, 1.0, 0.5)
+
+[sub_resource type="BoxMesh" id="BM_booth_lg_af"]
+size = Vector3(3, 3, 3)
+
+[sub_resource type="BoxShape3D" id="BS_booth_lg_af"]
+size = Vector3(3, 3, 3)
+
+[sub_resource type="BoxMesh" id="BM_booth_sm_af"]
+size = Vector3(2, 2.5, 2)
+
+[sub_resource type="BoxShape3D" id="BS_booth_sm_af"]
+size = Vector3(2, 2.5, 2)
+
+[sub_resource type="BoxMesh" id="BM_sign_af"]
+size = Vector3(3, 0.8, 0.15)
+
+[sub_resource type="BoxMesh" id="BM_merry_base_af"]
+size = Vector3(4, 0.25, 4)
+
+[sub_resource type="BoxShape3D" id="BS_merry_base_af"]
+size = Vector3(4, 0.25, 4)
+
+[sub_resource type="BoxMesh" id="BM_merry_pole_af"]
+size = Vector3(0.15, 2.5, 0.15)
+
+[sub_resource type="BoxShape3D" id="BS_merry_pole_af"]
+size = Vector3(0.15, 2.5, 0.15)
+
+[sub_resource type="BoxShape3D" id="BS_link_wheel_af"]
+size = Vector3(6, 12, 4)
+
+[sub_resource type="BoxShape3D" id="BS_link_merry_af"]
+size = Vector3(5, 2, 5)
+
+[sub_resource type="BoxShape3D" id="BS_link_exit_af"]
+size = Vector3(8, 3, 1)
+
+[sub_resource type="CapsuleMesh" id="CM_af"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CS_af"]
+radius = 0.3
+height = 1.8
+
+[node name="AbandonedFair" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_af")
+
+[node name="OmniLight_Center" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+light_color = Color(0.9, 0.45, 0.08, 1)
+light_energy = 1.8
+omni_range = 18.0
+
+[node name="OmniLight_West" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.5, -8)
+light_color = Color(0.7, 0.25, 0.05, 1)
+light_energy = 0.9
+omni_range = 10.0
+shadow_enabled = false
+
+[node name="OmniLight_East" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.5, -8)
+light_color = Color(0.9, 0.65, 0.08, 1)
+light_energy = 0.7
+omni_range = 10.0
+shadow_enabled = false
+
+[node name="OmniLight_Wheel" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -15)
+light_color = Color(0.5, 0.15, 0.02, 1)
+light_energy = 0.6
+omni_range = 8.0
+shadow_enabled = false
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="GroundMesh" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BM_ground_af")
+material_override = SubResource("Mat_ground_af")
+
+[node name="GroundShape" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BS_ground_af")
+
+[node name="VertPole" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, -15)
+
+[node name="Mesh" type="MeshInstance3D" parent="VertPole"]
+mesh = SubResource("BM_pole_af")
+material_override = SubResource("Mat_rust_af")
+
+[node name="Shape" type="CollisionShape3D" parent="VertPole"]
+shape = SubResource("BS_pole_af")
+
+[node name="HorizAxle" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14, -15)
+
+[node name="Mesh" type="MeshInstance3D" parent="HorizAxle"]
+mesh = SubResource("BM_axle_af")
+material_override = SubResource("Mat_rust_af")
+
+[node name="Shape" type="CollisionShape3D" parent="HorizAxle"]
+shape = SubResource("BS_axle_af")
+
+[node name="Gondola_E" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 13, -15)
+
+[node name="Mesh" type="MeshInstance3D" parent="Gondola_E"]
+mesh = SubResource("BM_gondola_af")
+material_override = SubResource("Mat_rust_af")
+
+[node name="Shape" type="CollisionShape3D" parent="Gondola_E"]
+shape = SubResource("BS_gondola_af")
+
+[node name="Gondola_W" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 13, -15)
+
+[node name="Mesh" type="MeshInstance3D" parent="Gondola_W"]
+mesh = SubResource("BM_gondola_af")
+material_override = SubResource("Mat_rust_af")
+
+[node name="Shape" type="CollisionShape3D" parent="Gondola_W"]
+shape = SubResource("BS_gondola_af")
+
+[node name="TicketBooth" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.5, -6)
+
+[node name="Mesh" type="MeshInstance3D" parent="TicketBooth"]
+mesh = SubResource("BM_booth_lg_af")
+material_override = SubResource("Mat_booth_dark_af")
+
+[node name="Shape" type="CollisionShape3D" parent="TicketBooth"]
+shape = SubResource("BS_booth_lg_af")
+
+[node name="Sign" type="MeshInstance3D" parent="TicketBooth"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+mesh = SubResource("BM_sign_af")
+material_override = SubResource("Mat_sign_af")
+
+[node name="GameBooth" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.25, -8)
+
+[node name="Mesh" type="MeshInstance3D" parent="GameBooth"]
+mesh = SubResource("BM_booth_sm_af")
+material_override = SubResource("Mat_booth_red_af")
+
+[node name="Shape" type="CollisionShape3D" parent="GameBooth"]
+shape = SubResource("BS_booth_sm_af")
+
+[node name="FoodStand" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.25, -4)
+
+[node name="Mesh" type="MeshInstance3D" parent="FoodStand"]
+mesh = SubResource("BM_booth_sm_af")
+material_override = SubResource("Mat_booth_dark_af")
+
+[node name="Shape" type="CollisionShape3D" parent="FoodStand"]
+shape = SubResource("BS_booth_sm_af")
+
+[node name="MerryGoRound" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+script = ExtResource("5_floatanim")
+BobAmplitude = 0.0
+BobSpeed = 0.0
+DoRotate = true
+RotateSpeed = 0.4
+
+[node name="Base" type="StaticBody3D" parent="MerryGoRound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="MerryGoRound/Base"]
+mesh = SubResource("BM_merry_base_af")
+material_override = SubResource("Mat_merry_af")
+
+[node name="Shape" type="CollisionShape3D" parent="MerryGoRound/Base"]
+shape = SubResource("BS_merry_base_af")
+
+[node name="Pole" type="StaticBody3D" parent="MerryGoRound"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.375, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="MerryGoRound/Pole"]
+mesh = SubResource("BM_merry_pole_af")
+material_override = SubResource("Mat_rust_af")
+
+[node name="Shape" type="CollisionShape3D" parent="MerryGoRound/Pole"]
+shape = SubResource("BS_merry_pole_af")
+
+[node name="LinkZone_Wheel" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, -15)
+script = ExtResource("4_linkzone")
+LinkType = "dynamic"
+StaticTarget = ""
+StaticSpawn = ""
+MoodUd = -2.5
+MoodSd = 1.0
+FadeColor = Color(0.2, 0.05, 0.0, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_Wheel"]
+shape = SubResource("BS_link_wheel_af")
+
+[node name="LinkZone_Merry" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, -5)
+script = ExtResource("4_linkzone")
+LinkType = "static"
+StaticTarget = "res://scenes/HotDogDream.tscn"
+StaticSpawn = "hotdog"
+MoodUd = 1.5
+MoodSd = 2.0
+FadeColor = Color(0.85, 0.55, 0.1, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_Merry"]
+shape = SubResource("BS_link_merry_af")
+
+[node name="LinkZone_South" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 9.5)
+script = ExtResource("4_linkzone")
+LinkType = "dynamic"
+StaticTarget = ""
+StaticSpawn = ""
+MoodUd = -1.0
+MoodSd = 0.5
+FadeColor = Color(0.0, 0.0, 0.0, 1.0)
+
+[node name="Shape" type="CollisionShape3D" parent="LinkZone_South"]
+shape = SubResource("BS_link_exit_af")
+
+[node name="Spawn_Fairground" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 7)
+
+[node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 7)
+script = ExtResource("1_player")
+
+[node name="PlayerMesh" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CM_af")
+
+[node name="PlayerCollision" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CS_af")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="PSX_CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="ScreenFX" type="ColorRect" parent="PSX_CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+material = SubResource("Mat_screen_af")
+mouse_filter = 2
