@@ -1,0 +1,371 @@
+[gd_scene load_steps=44 format=3]
+
+[ext_resource type="Script" path="res://scripts/Player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/Door.gd" id="2_door"]
+[ext_resource type="Shader" path="res://shaders/ps1_world.gdshader" id="3_ps1world"]
+[ext_resource type="Shader" path="res://shaders/ps1_screen.gdshader" id="4_ps1screen"]
+[ext_resource type="PackedScene" path="res://scenes/Chair.tscn" id="5_chair"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.12, 0.1, 0.08, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1.0, 0.92, 0.8, 1)
+ambient_light_energy = 0.6
+fog_enabled = true
+fog_density = 0.05
+fog_light_color = Color(0.2, 0.15, 0.1, 1)
+
+[sub_resource type="ShaderMaterial" id="Mat_walls"]
+shader = ExtResource("3_ps1world")
+shader_parameter/albedo = Color(0.85, 0.78, 0.65, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(8, 0.2, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(8, 0.2, 8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ceiling"]
+size = Vector3(8, 0.2, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ceiling"]
+size = Vector3(8, 0.2, 8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ns"]
+size = Vector3(8.5, 3, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns"]
+size = Vector3(8.5, 3, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ew"]
+size = Vector3(0.5, 3, 7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ew"]
+size = Vector3(0.5, 3, 7)
+
+[sub_resource type="ShaderMaterial" id="Mat_door"]
+shader = ExtResource("3_ps1world")
+shader_parameter/albedo = Color(0.35, 0.22, 0.1, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_door"]
+size = Vector3(1.5, 2.5, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_door_trigger"]
+size = Vector3(3.0, 3.0, 3.0)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="ShaderMaterial" id="SMat_screen"]
+shader = ExtResource("4_ps1screen")
+shader_parameter/color_depth = 32.0
+shader_parameter/dither_strength = 0.8
+shader_parameter/saturation = 1.8
+
+[sub_resource type="ShaderMaterial" id="Mat_wood"]
+shader = ExtResource("3_ps1world")
+shader_parameter/albedo = Color(0.55, 0.35, 0.15, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_fabric"]
+shader = ExtResource("3_ps1world")
+shader_parameter/albedo = Color(0.3, 0.35, 0.52, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_rug"]
+shader = ExtResource("3_ps1world")
+shader_parameter/albedo = Color(0.62, 0.18, 0.12, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_tv_screen"]
+shader = ExtResource("3_ps1world")
+shader_parameter/albedo = Color(0.06, 0.06, 0.06, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="ShaderMaterial" id="Mat_lampshade"]
+shader = ExtResource("3_ps1world")
+shader_parameter/albedo = Color(0.92, 0.88, 0.72, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="BoxMesh" id="BM_rug"]
+size = Vector3(3.5, 0.01, 2.5)
+
+[sub_resource type="BoxMesh" id="BM_couch_seat"]
+size = Vector3(2.0, 0.4, 0.8)
+
+[sub_resource type="BoxMesh" id="BM_couch_back"]
+size = Vector3(2.0, 0.5, 0.28)
+
+[sub_resource type="BoxShape3D" id="BS_couch_seat"]
+size = Vector3(2.0, 0.4, 0.8)
+
+[sub_resource type="BoxShape3D" id="BS_couch_back"]
+size = Vector3(2.0, 0.5, 0.28)
+
+[sub_resource type="BoxMesh" id="BM_coffee_table"]
+size = Vector3(0.9, 0.45, 0.55)
+
+[sub_resource type="BoxShape3D" id="BS_coffee_table"]
+size = Vector3(0.9, 0.45, 0.55)
+
+[sub_resource type="BoxMesh" id="BM_tv_stand"]
+size = Vector3(1.5, 0.55, 0.38)
+
+[sub_resource type="BoxShape3D" id="BS_tv_stand"]
+size = Vector3(1.5, 0.55, 0.38)
+
+[sub_resource type="BoxMesh" id="BM_tv_face"]
+size = Vector3(1.0, 0.6, 0.07)
+
+[sub_resource type="BoxMesh" id="BM_bookshelf"]
+size = Vector3(0.3, 1.8, 1.2)
+
+[sub_resource type="BoxShape3D" id="BS_bookshelf"]
+size = Vector3(0.3, 1.8, 1.2)
+
+[sub_resource type="BoxMesh" id="BM_dining_table"]
+size = Vector3(1.2, 0.75, 0.8)
+
+[sub_resource type="BoxShape3D" id="BS_dining_table"]
+size = Vector3(1.2, 0.75, 0.8)
+
+[sub_resource type="BoxMesh" id="BM_lamp_base"]
+size = Vector3(0.25, 0.08, 0.25)
+
+[sub_resource type="BoxMesh" id="BM_lamp_pole"]
+size = Vector3(0.06, 1.2, 0.06)
+
+[sub_resource type="BoxMesh" id="BM_lamp_shade"]
+size = Vector3(0.3, 0.22, 0.3)
+
+[node name="HouseInterior" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="CeilingLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+light_energy = 2.0
+omni_range = 14.0
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="FloorMesh" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_floor")
+material_override = SubResource("Mat_walls")
+
+[node name="FloorShape" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="Ceiling" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
+
+[node name="CeilingMesh" type="MeshInstance3D" parent="Ceiling"]
+mesh = SubResource("BoxMesh_ceiling")
+material_override = SubResource("Mat_walls")
+
+[node name="CeilingShape" type="CollisionShape3D" parent="Ceiling"]
+shape = SubResource("BoxShape3D_ceiling")
+
+[node name="Wall_N" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -4.25)
+
+[node name="WallNMesh" type="MeshInstance3D" parent="Wall_N"]
+mesh = SubResource("BoxMesh_wall_ns")
+material_override = SubResource("Mat_walls")
+
+[node name="WallNShape" type="CollisionShape3D" parent="Wall_N"]
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="Wall_S" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 4.25)
+
+[node name="WallSMesh" type="MeshInstance3D" parent="Wall_S"]
+mesh = SubResource("BoxMesh_wall_ns")
+material_override = SubResource("Mat_walls")
+
+[node name="WallSShape" type="CollisionShape3D" parent="Wall_S"]
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="Wall_E" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 1.5, 0)
+
+[node name="WallEMesh" type="MeshInstance3D" parent="Wall_E"]
+mesh = SubResource("BoxMesh_wall_ew")
+material_override = SubResource("Mat_walls")
+
+[node name="WallEShape" type="CollisionShape3D" parent="Wall_E"]
+shape = SubResource("BoxShape3D_wall_ew")
+
+[node name="Wall_W" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.25, 1.5, 0)
+
+[node name="WallWMesh" type="MeshInstance3D" parent="Wall_W"]
+mesh = SubResource("BoxMesh_wall_ew")
+material_override = SubResource("Mat_walls")
+
+[node name="WallWShape" type="CollisionShape3D" parent="Wall_W"]
+shape = SubResource("BoxShape3D_wall_ew")
+
+[node name="ExitDoor" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -3.5)
+script = ExtResource("2_door")
+target_scene = "res://scenes/OutdoorRoom.tscn"
+spawn_target = "outdoor"
+
+[node name="DoorMesh" type="MeshInstance3D" parent="ExitDoor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -0.45)
+mesh = SubResource("BoxMesh_door")
+material_override = SubResource("Mat_door")
+
+[node name="DoorShape" type="CollisionShape3D" parent="ExitDoor"]
+shape = SubResource("BoxShape3D_door_trigger")
+
+[node name="HintLabel" type="Label3D" parent="ExitDoor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0.5)
+text = "Press E to exit"
+font_size = 48
+pixel_size = 0.01
+billboard = 1
+visible = false
+
+[node name="Spawn_Interior" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1)
+
+[node name="Rug" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0.5)
+mesh = SubResource("BM_rug")
+material_override = SubResource("Mat_rug")
+
+[node name="Couch_Seat" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, 0.2, 0.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Couch_Seat"]
+mesh = SubResource("BM_couch_seat")
+material_override = SubResource("Mat_fabric")
+
+[node name="Shape" type="CollisionShape3D" parent="Couch_Seat"]
+shape = SubResource("BS_couch_seat")
+
+[node name="Couch_Back" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.86, 0.65, 0.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Couch_Back"]
+mesh = SubResource("BM_couch_back")
+material_override = SubResource("Mat_fabric")
+
+[node name="Shape" type="CollisionShape3D" parent="Couch_Back"]
+shape = SubResource("BS_couch_back")
+
+[node name="Coffee_Table" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 0.225, 0.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Coffee_Table"]
+mesh = SubResource("BM_coffee_table")
+material_override = SubResource("Mat_wood")
+
+[node name="Shape" type="CollisionShape3D" parent="Coffee_Table"]
+shape = SubResource("BS_coffee_table")
+
+[node name="TV_Stand" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.81, 0.275, 0.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="TV_Stand"]
+mesh = SubResource("BM_tv_stand")
+material_override = SubResource("Mat_wood")
+
+[node name="Shape" type="CollisionShape3D" parent="TV_Stand"]
+shape = SubResource("BS_tv_stand")
+
+[node name="TV_Screen" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.77, 0.855, 0.5)
+mesh = SubResource("BM_tv_face")
+material_override = SubResource("Mat_tv_screen")
+
+[node name="Bookshelf" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.85, 0.9, -3.85)
+
+[node name="Mesh" type="MeshInstance3D" parent="Bookshelf"]
+mesh = SubResource("BM_bookshelf")
+material_override = SubResource("Mat_wood")
+
+[node name="Shape" type="CollisionShape3D" parent="Bookshelf"]
+shape = SubResource("BS_bookshelf")
+
+[node name="Dining_Table" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.375, 2.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Dining_Table"]
+mesh = SubResource("BM_dining_table")
+material_override = SubResource("Mat_wood")
+
+[node name="Shape" type="CollisionShape3D" parent="Dining_Table"]
+shape = SubResource("BS_dining_table")
+
+[node name="Chair_North" parent="." instance=ExtResource("5_chair")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 1.6)
+
+[node name="Chair_South" parent="." instance=ExtResource("5_chair")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.5, 0, 3.4)
+
+[node name="Lamp_Base" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.04, -3.2)
+mesh = SubResource("BM_lamp_base")
+material_override = SubResource("Mat_wood")
+
+[node name="Lamp_Pole" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.64, -3.2)
+mesh = SubResource("BM_lamp_pole")
+material_override = SubResource("Mat_wood")
+
+[node name="Lamp_Shade" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 1.34, -3.2)
+mesh = SubResource("BM_lamp_shade")
+material_override = SubResource("Mat_lampshade")
+
+[node name="Lamp_Light" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 1.45, -3.2)
+light_color = Color(1.0, 0.85, 0.55, 1)
+light_energy = 1.2
+omni_range = 8.0
+
+[node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1)
+script = ExtResource("1_player")
+
+[node name="PlayerMesh" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_player")
+
+[node name="PlayerCollision" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="PSX_CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="ScreenFX" type="ColorRect" parent="PSX_CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+material = SubResource("SMat_screen")
+mouse_filter = 2

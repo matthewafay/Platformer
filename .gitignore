@@ -1,0 +1,5 @@
+# Godot engine files
+Godot/
+
+# Claude Code local files
+.claude/

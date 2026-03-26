@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Shader" path="res://shaders/ps1_world.gdshader" id="1_ps1world"]
+
+[sub_resource type="ShaderMaterial" id="Mat_wood"]
+shader = ExtResource("1_ps1world")
+shader_parameter/albedo = Color(0.55, 0.3, 0.1, 1)
+shader_parameter/snap_resolution = 64.0
+shader_parameter/color_depth = 32.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_seat"]
+size = Vector3(0.5, 0.04, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_backrest"]
+size = Vector3(0.5, 0.4, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_leg"]
+size = Vector3(0.05, 0.44, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_chair"]
+size = Vector3(0.52, 0.72, 0.52)
+
+[node name="Chair" type="StaticBody3D"]
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36, 0)
+shape = SubResource("BoxShape3D_chair")
+
+[node name="Seat" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.46, 0)
+mesh = SubResource("BoxMesh_seat")
+material_override = SubResource("Mat_wood")
+
+[node name="Backrest" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.66, -0.23)
+mesh = SubResource("BoxMesh_backrest")
+material_override = SubResource("Mat_wood")
+
+[node name="Leg_FL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.22, 0.2)
+mesh = SubResource("BoxMesh_leg")
+material_override = SubResource("Mat_wood")
+
+[node name="Leg_FR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.22, 0.2)
+mesh = SubResource("BoxMesh_leg")
+material_override = SubResource("Mat_wood")
+
+[node name="Leg_BL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.22, -0.2)
+mesh = SubResource("BoxMesh_leg")
+material_override = SubResource("Mat_wood")
+
+[node name="Leg_BR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.22, -0.2)
+mesh = SubResource("BoxMesh_leg")
+material_override = SubResource("Mat_wood")
